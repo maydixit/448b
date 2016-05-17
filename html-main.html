@@ -4,7 +4,47 @@
 	<meta charset="utf-8">
 	<title> CS 448b Final Project </title>
 	<script type="text/javascript" src="d3/d3.js"></script>
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="bootstrap/js/bootstrap.js"></script>
+	<!-- Bootstrap -->
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" type="text/css" href="css-main.css">
 </head>
 <body>
+	<!-- <script src="bootstrap/js/bootstrap.min.js"></script>-->
+	<div id="container">
+		<div id="top-buffer">
+		</div>
+		<div id="side-buffer">
+		</div>
+		<div id="graph">
+			<h2> The graph goes here </h2>
+		</div>
+		<div id="side-bar">
+			<h3> File and Layout Options </h3>
+			<hr>
+			<button type="button" class="btn btn-secondary">Upload File</button>
+
+			<hr>
+
+			<!-- need javascript to make interactive -now doesn't change on click-->
+			<div class="btn-group btn-toggle">
+				<h5> Grid-lines: </h5>
+				<button class="btn btn-default">ON</button>
+				<button class="btn btn-primary active">OFF</button>
+			</div>
+			<hr>
+
+			<h5> Graphing Options: </h5>
+			<div class="radio">
+				<label><input type="radio" name="optradio">Bar Graph</label>
+			</div>
+			<div class="radio">
+				<label><input type="radio" name="optradio">Line Graph</label>
+			</div>
+
+			<hr>
+			<h5> Elements of Uploaded Data: </h5>
+		</div>
+	</div>
 </body>
