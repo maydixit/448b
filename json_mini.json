@@ -1,0 +1,35 @@
+{ "map" : { 
+"0" : { 
+"name" : "aaq: Pawanobskewi"
+ , "children" : "[ 201186 ]"
+} , 
+"1" : { 
+"name" : "aaq: senabe"
+ , "children" : "[ 526326 ]"
+} , 
+"2" : { 
+"name" : "abe: waniigan"
+ , "children" : "[ 608783 608842 ]"
+} , 
+"3" : { 
+"name" : "abs: beta"
+ , "children" : "[ 2885466 ]"
+} , 
+"4" : { 
+"name" : "adt: yuru"
+ , "children" : "[ 332435 ]"
+} , 
+"5" : { 
+"name" : "afr: -heid"
+ , "children" : "[ 377 ]"
+} , 
+"6" : { 
+"name" : "afr: -ig"
+ , "children" : "[ 191 539 ]"
+} , 
+"7" : { 
+"name" : "afr: -ing"
+ , "children" : "[ 559 ]"
+}
+}
+}
