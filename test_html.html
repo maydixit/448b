@@ -49,24 +49,35 @@
     var root = {};
     console.log("we are a go!");
 
-    //returns an array of parents (string). If no parents found, the array contains one element equal to ""
-    function get_parents(central_id ){
+    //Function to find parents of a given word (etymologically)
+    //input: id of the node to be expanded
+    //return: Array of parent ids, or null.
+    function get_parents(local_id ){
 
-        pstring = data[central_id]["parents"];
+        pstring = data[local_id]["parents"];
         parray = pstring.split(" ");
+        if(parray.length == 1 && parray[0]=="")
+            return null;
         return parray;
 
     }
-    function get_children(central_id ){
 
-        pstring = data[central_id]["children"];
+    //Function to find children of a given word (etymologically)
+    //input: id of the node to be expanded
+    //return: Array of children ids, or null.
+    function get_children(local_id ){
+
+        pstring = data[local_id]["children"];
         parray = pstring.split(" ");
+        if(parray.length == 1 && parray[0]=="")
+            return null;
         return parray;
 
     }
 
-    // returns an array of all the ids where this word/phrase is found (only complete matches)
-    // can be used to search for a word.
+    //Function to find ID of a word.
+    // Input: word/phrase without the name of the language.
+    // Output; returns an array of all the ids where this word/phrase is found (only complete matches)
     function find_id(word){
         var ret = Array();
         for(i in data){
@@ -77,11 +88,15 @@
         return ret;
     }
 
+    //Function to get the language of a particular name (name comes from the json)
     function get_language_from_name(name) {
         return phrase.split(": ")[0];
     }
 
-    //update the root tree.
+    //Function to update the root of the tree to be used while drawing the tree
+    //No input
+    //No return
+    //Creates the tree data structure
     function update_root(){
         root.name = data[central]["name"];
         root.id = central;
@@ -90,6 +105,8 @@
     }
 
     //update the children nodes recursively. The ends terminate with children having an array with a null elemeent.
+    //Input: Node, depth
+    //Output: Children array or null
     function get_children_nodes(node, depth_local){
         if(depth_local >= depth)
             return null;
@@ -117,8 +134,10 @@
 
     }
 
+
+    //Function to draw the tree radially
     diameter = 960;
-    function draw() {
+    function draw_tree() {
 
         var tree = d3.layout.tree()
                 .size([360, diameter / 2 - 120])
@@ -162,21 +181,10 @@
     d3.select(self.frameElement).style("height", diameter - 150 + "px");
 
 
+
+    //Selection of data and calling of functions initial.
     d3.json("json_children_parents.json", function(input) {
         data = input["map"];
-
-        // for (i in data["map"]){
-        //   console.log(data["map"][i]);
-        //}
-
-        //Now we call visualize display
-        //display_some_data()
-
-        //Use depth and id to get list of lists of related items
-//        console.log("parents = " + get_parents(central));
-  //      console.log("children: " + get_children(central))
-    //    console.log(find_id("waniigan"));
-      //  console.log(find_id("pain"));
 
         update_root();
         var node = root;
@@ -186,10 +194,7 @@
             console.log("exploring to: " + node.id);
             node = node.children[0];
         }
-        draw();
-
-
-
+        draw_tree();
 
     });
 
