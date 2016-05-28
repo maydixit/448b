@@ -43,9 +43,9 @@
 
 
 
-    var depth = 5;
+    var depth = 10;
     var data = null;
-    var central = 2025035;
+    var central = 236684;
     var root = {};
     console.log("we are a go!");
 
@@ -103,8 +103,16 @@
         root.depth = 0;
         root.children = get_children_nodes(root, 0, get_children);
         var temp_parents = get_children_nodes(root, 0, get_parents);
-        if ( temp_parents != null)
+
+        if(root.children != null)
+        {
+            if ( temp_parents != null)
             root.children.concat(temp_parents);
+        }
+        else
+        root.children = temp_parents;
+
+
     }
 
     //update the children nodes recursively. The ends terminate with children having an array with a null elemeent.
@@ -191,21 +199,36 @@
 
 
 
+    function draw_multiple_trees(min, max){
+        for(var i = min; i < max; i++)
+        {
+                console.log(i)
+                central = i;
+                update_root();
+                draw_tree();
+        }
+    }
+
     //Selection of data and calling of functions initial.
     d3.json("json_children_parents.json", function(input) {
         data = input["map"];
 
-        update_root();
-        var node = root;
+
+
+
+       draw_multiple_trees(central, central+1)
+
+      /*  var node = root;
         console.log("root is: " + root)
         while(node.children!=null)
         {
             console.log("exploring to: " + node.id);
             node = node.children[0];
-        }
-        draw_tree();
+        }*/
+
 
     });
+
 
 
 
