@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <title>CS448B Assignment 3</title>
+    <style>
+        path {
+            stroke: white;
+            stroke-width: 0.5px;
+            fill: black;
+        }
+    </style>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/topojson.v0.min.js"></script>
+</head>
+
+<body bgcolor="#696969" >
+
+<script type="text/javascript">
+    //TODO: catch all exceptions
+
+    var depth = 5;
+    var data = null;
+    var central = 208381;
+    console.log("we are a go!")
+
+    //returns an array of parents (string). If no parents found, the array contains one element equal to ""
+    function get_parents(central_id ){
+
+        pstring = data[central_id]["parents"];
+        parray = pstring.split(" ");
+        return parray;
+
+    }
+    function get_children(central_id ){
+
+        pstring = data[central_id]["children"];
+        parray = pstring.split(" ");
+        return parray;
+
+    }
+
+    // returns an array of all the ids where this word/phrase is found (only complete matches)
+    // can be used to search for a word.
+    function find_id(word){
+        var ret = Array();
+        for(i in data){
+            phrase = data[i]["name"];
+            if(phrase.split(": ")[1] == word)
+                ret.push(data[i]["id"]);
+        }
+        return ret;
+    }
+
+    function get_language_from_name(name) {
+        return phrase.split(": ")[0];
+    }
+
+
+
+
+    d3.json("json_children_parents.json", function(input) {
+        data = input["map"]
+
+        // for (i in data["map"]){
+        //   console.log(data["map"][i]);
+        //}
+
+        //Now we call visualize display
+        //display_some_data()
+
+        //Use depth and id to get list of lists of related items
+        console.log("parents = " + get_parents(central));
+        console.log("children: " + get_children(central))
+        console.log(find_id("waniigan"));
+        console.log(find_id("pain"));
+
+
+
+
+
+
+
+    });
+
+
+</script>
+</body>
+</html>
