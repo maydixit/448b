@@ -14,15 +14,40 @@
     <script src="http://d3js.org/topojson.v0.min.js"></script>
 </head>
 
-<body bgcolor="#696969" >
+<style>
+
+    .node circle {
+        fill: #fff;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+    }
+
+    .node {
+        font: 10px sans-serif;
+    }
+
+    .link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 1.5px;
+    }
+
+</style>
+
+<body >
 
 <script type="text/javascript">
     //TODO: catch all exceptions
 
+
+
+
+
     var depth = 5;
     var data = null;
-    var central = 208381;
-    console.log("we are a go!")
+    var central = 2025035;
+    var root = {};
+    console.log("we are a go!");
 
     //returns an array of parents (string). If no parents found, the array contains one element equal to ""
     function get_parents(central_id ){
@@ -56,11 +81,89 @@
         return phrase.split(": ")[0];
     }
 
+    //update the root tree.
+    function update_root(){
+        root.name = data[central]["name"];
+        root.id = central;
+        root.depth = 0;
+        root.children = get_children_nodes(root, 0);
+    }
 
+    //update the children nodes recursively. The ends terminate with children having an array with a null elemeent.
+    function get_children_nodes(node, depth_local){
+        if(depth_local >= depth)
+            return null;
+
+        console.log("in get children: at depth: " + depth_local + " for: " + node.id);
+        var children_local = get_children(node.id);
+        if(children_local.length == 1 && children_local[0] == "")
+            return null;
+        console.log("got children: " + children_local);
+        var children_to_return = Array();
+
+        for(var index in children_local){
+            console.log('for child: ' + children_local[index] + "in all of them as: " + children_local);
+            var child_node = {};
+            child_node.id = children_local[index];
+            child_node.name = data[child_node.id]["name"];
+            var temp_children = get_children_nodes(child_node, depth_local+1);
+            if(temp_children!=null)
+                child_node.children = temp_children;
+            children_to_return.push(child_node);
+            console.log("adding child as: " + child_node.id + child_node.name)
+        }
+
+        return children_to_return;
+
+    }
+
+    diameter = 960;
+    function draw() {
+
+        var tree = d3.layout.tree()
+                .size([360, diameter / 2 - 120])
+                .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
+
+        var diagonal = d3.svg.diagonal.radial()
+                .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
+
+        var svg = d3.select("body").append("svg")
+                .attr("width", diameter)
+                .attr("height", diameter - 150)
+                .append("g")
+                .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+
+        var nodes = tree.nodes(root),
+                links = tree.links(nodes);
+
+        var link = svg.selectAll(".link")
+                .data(links)
+                .enter().append("path")
+                .attr("class", "link")
+                .attr("d", diagonal);
+
+        var node = svg.selectAll(".node")
+                .data(nodes)
+                .enter().append("g")
+                .attr("class", "node")
+                .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+
+        node.append("circle")
+                .attr("r", 4.5);
+
+        node.append("text")
+                .attr("dy", ".31em")
+                .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+                .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
+                .text(function(d) { return d.name; });
+
+
+    }
+    d3.select(self.frameElement).style("height", diameter - 150 + "px");
 
 
     d3.json("json_children_parents.json", function(input) {
-        data = input["map"]
+        data = input["map"];
 
         // for (i in data["map"]){
         //   console.log(data["map"][i]);
@@ -70,18 +173,28 @@
         //display_some_data()
 
         //Use depth and id to get list of lists of related items
-        console.log("parents = " + get_parents(central));
-        console.log("children: " + get_children(central))
-        console.log(find_id("waniigan"));
-        console.log(find_id("pain"));
+//        console.log("parents = " + get_parents(central));
+  //      console.log("children: " + get_children(central))
+    //    console.log(find_id("waniigan"));
+      //  console.log(find_id("pain"));
 
-
-
+        update_root();
+        var node = root;
+        console.log("root is: " + root)
+        while(node.children!=null)
+        {
+            console.log("exploring to: " + node.id);
+            node = node.children[0];
+        }
+        draw();
 
 
 
 
     });
+
+
+
 
 
 </script>
