@@ -101,19 +101,23 @@
         root.name = data[central]["name"];
         root.id = central;
         root.depth = 0;
-        root.children = get_children_nodes(root, 0);
+        root.children = get_children_nodes(root, 0, get_children);
+        var temp_parents = get_children_nodes(root, 0, get_parents);
+        if ( temp_parents != null)
+            root.children.concat(temp_parents);
     }
 
     //update the children nodes recursively. The ends terminate with children having an array with a null elemeent.
     //Input: Node, depth
     //Output: Children array or null
-    function get_children_nodes(node, depth_local){
+    function get_children_nodes(node, depth_local, updation_children){
         if(depth_local >= depth)
             return null;
 
         console.log("in get children: at depth: " + depth_local + " for: " + node.id);
-        var children_local = get_children(node.id);
-        if(children_local.length == 1 && children_local[0] == "")
+
+        var children_local = updation_children(node.id);
+        if(children_local == null)
             return null;
         console.log("got children: " + children_local);
         var children_to_return = Array();
@@ -123,7 +127,11 @@
             var child_node = {};
             child_node.id = children_local[index];
             child_node.name = data[child_node.id]["name"];
-            var temp_children = get_children_nodes(child_node, depth_local+1);
+            if(updation_children == get_children)
+                child_node.rel = "child";
+            else if(updation_children == get_parents)
+                child_node.rel = "parent";
+            var temp_children = get_children_nodes(child_node, depth_local+1, updation_children);
             if(temp_children!=null)
                 child_node.children = temp_children;
             children_to_return.push(child_node);
@@ -131,11 +139,12 @@
         }
 
         return children_to_return;
-
     }
 
 
     //Function to draw the tree radially
+    //Currently, draws both etymological origins and derivations with the same color
+    //TODO: Color the links based on node.rel -> it's "parent" or "child"
     diameter = 960;
     function draw_tree() {
 
