@@ -4,10 +4,10 @@
     width:100%;
 }
 
-#side-bar, #graph, #side-buffer {display: inline-block; vertical-align:top;}
+#side-bar, #graph, #side-buffer, #top-bar {display: inline-block; vertical-align:top;}
             
 #side-bar {
-     width:30%;
+     width:15%;
      min-height: 100%;
     /* outline: dotted;
      outline-color: gray;
@@ -17,13 +17,18 @@
 }
             
 #graph {
-    width:65%;
+    width:73%;
 }
 
 
 #top-buffer {
     width: 100%;
     height: 50px;
+}
+
+#top-bar {
+  width:100%;
+  height: 150px;
 }
 
 #side-buffer {
@@ -33,5 +38,60 @@
 #gridline-switch {
     clear: left;
 }
+
+
+/* for the hierarchial bundle layout*/
+/*.link {
+  stroke: steelblue;
+  stroke-opacity: .4;
+  fill: none;
+  pointer-events: none;
+}
+
+.node:hover,
+.node--source,
+.node--target {
+  font-weight: 700;
+}
+
+.node--source {
+  fill: #2ca02c;
+}
+
+.node--target {
+  fill: #d62728;
+}
+
+.link--source,
+.link--target {
+  stroke-opacity: 1;
+  stroke-width: 2px;
+}
+
+.link--source {
+  stroke: #d62728;
+}
+
+.link--target {
+  stroke: #2ca02c;
+}
+*/
+
+ .node circle {
+        fill: #fff;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+    }
+
+    .node {
+        font: 10px sans-serif;
+    }
+
+    .link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 1.5px;
+    }
+
 
 

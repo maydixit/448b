@@ -9,19 +9,23 @@
 
     function submitFunction() {
         console.log("entered submit function");
-        var word = document.getElementById("frm1").name;
 
-        console.log(word);
+        //console.log(document.getElementById("searchWord").value);
+
+        var word = document.getElementById("searchWord").value;
+
+
+        console.log("the submitted word is: " + word);
 
         //shows depth-1
         var obj = document.getElementById("selectLevel").selectedIndex;
              
        // var select = obj.options[obj.selectedIndex].text;
 
-        console.log(obj);
+        console.log("the depth selected is: " + obj);
 
         depth = Number(obj+1);
-        startSearch(central, central+1)
+     //   startSearch(central, central+1)
 
     }
 
