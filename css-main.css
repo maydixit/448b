@@ -4,7 +4,7 @@
     width:100%;
 }
 
-#side-bar, #graph, #side-buffer, #top-bar {display: inline-block; vertical-align:top;}
+#side-bar, #graph, #side-buffer, #top-bar, #title-buffer, #title-container {display: inline-block; vertical-align:top;}
             
 #side-bar {
      width:15%;
@@ -17,27 +17,32 @@
 }
             
 #graph {
-    width:73%;
+    width:72%;
 }
 
 
 #top-buffer {
     width: 100%;
-    height: 50px;
+    height: 10px;
 }
 
 #top-bar {
-  width:100%;
-  height: 150px;
+  width:70%;
+  height: 80px;
 }
 
 #side-buffer {
     width: 2%;
 }
 
-#gridline-switch {
-    clear: left;
+#title-buffer {
+  width:50px;
+  height: 50px;
 }
+
+#title-container {
+}
+
 
 
 /* for the hierarchial bundle layout*/

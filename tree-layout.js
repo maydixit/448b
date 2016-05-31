@@ -9,24 +9,20 @@
 
     function submitFunction() {
         console.log("entered submit function");
-
-        //console.log(document.getElementById("searchWord").value);
-
         var word = document.getElementById("searchWord").value;
-
-
         console.log("the submitted word is: " + word);
-
         //shows depth-1
-        var obj = document.getElementById("selectLevel").selectedIndex;
-             
-       // var select = obj.options[obj.selectedIndex].text;
+        var selectedDepth = document.getElementById("selectLevel").selectedIndex;
+        console.log("the depth selected is: " + selectedDepth);
+        depth = Number(selectedDepth+1);
+        //array where word appears
+        var appearsIn = find_id(word);
+        //extracting the first word???
+        var wordId = appearsIn[0];
+        central = Number(wordId); //setting the central node
+        d3.select("svg").remove();  //removes old tree
 
-        console.log("the depth selected is: " + obj);
-
-        depth = Number(obj+1);
-     //   startSearch(central, central+1)
-
+        draw_multiple_trees(central, central+1)   
     }
 
     //Function to find parents of a given word (etymologically)
@@ -79,7 +75,9 @@
     //Creates the tree data structure
     function update_root(){
         root.name = data[central]["name"];
+        console.log("NAME OF ROOT: " + root.name);
         root.id = central;
+        console.log("ID OF ROOT: " + root.id);
         root.depth = 0;
         root.children = get_children_nodes(root, 0, get_children);
         var temp_parents = get_children_nodes(root, 0, get_parents);
@@ -133,7 +131,9 @@
     //Function to draw the tree radially
     //Currently, draws both etymological origins and derivations with the same color
     //TODO: Color the links based on node.rel -> it's "parent" or "child"
-    diameter = 960;
+    diameter = 700; //was 960
+
+    var svg;
     function draw_tree() {
 
         var tree = d3.layout.tree()
@@ -143,7 +143,7 @@
         var diagonal = d3.svg.diagonal.radial()
                 .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
-        var svg = d3.select("body").append("svg")
+        svg = d3.select("#graph").append("svg")
                 .attr("width", diameter)
                 .attr("height", diameter - 150)
                 .append("g")
@@ -178,18 +178,7 @@
     d3.select(self.frameElement).style("height", diameter - 150 + "px");
 
     function startSearch(central, next) {
-      //  var SearchWord = document.getElementById("searchWord").value;
-     //   console.log("the search word: " + SearchWord);
-
-     //   var wordIdArr;
-
-    //    d3.select("#startSearch").on("click", wordIdArr = find_id(SearchWord));
-
-     //   var wordId = Number(wordIdArr[0]);
-     //   var wordIdNext = Number(wordId+1);
-
-   //     console.log("ID of word: " + wordId);
-        draw_multiple_trees(central, next)        
+        draw_multiple_trees(Number(central), Number(next));       
 
     }
 
@@ -208,9 +197,9 @@
         data = input["map"];
 
 
-        startSearch(central, central+1)
+       // startSearch(central, central+1)
 
-      // draw_multiple_trees(central, central+1)
+        draw_multiple_trees(central, central+1)
 
       /*  var node = root;
         console.log("root is: " + root)
