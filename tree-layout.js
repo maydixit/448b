@@ -17,12 +17,27 @@
         depth = Number(selectedDepth+1);
         //array where word appears
         var appearsIn = find_id(word);
+
+        var numWords = appearsIn.length;
+
+        console.log("all the words: " + appearsIn);
+
+        console.log("NUMBER OF WORDS: " +numWords);
         //extracting the first word???
-        var wordId = appearsIn[0];
-        central = Number(wordId); //setting the central node
+      //  var wordId = appearsIn[0];
+       // central = Number(wordId); //setting the central node
         d3.select("svg").remove();  //removes old tree
 
-        draw_multiple_trees(central, central+1)   
+        for (var i = 0; i < numWords; i++) {
+            draw_each_tree(appearsIn[i]);
+        }
+
+      //  draw_multiple_trees(central, central+1)   
+    }
+
+    function draw_each_tree(id_number) {
+           central = Number(id_number); //setting the central node
+           draw_multiple_trees(id_number, id_number+1);  
     }
 
     //Function to find parents of a given word (etymologically)

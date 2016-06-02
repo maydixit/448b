@@ -7,12 +7,9 @@
 #side-bar, #graph, #side-buffer, #top-bar, #title-buffer, #title-container {display: inline-block; vertical-align:top;}
             
 #side-bar {
-     width:15%;
+     width:240px;
      min-height: 100%;
-    /* outline: dotted;
-     outline-color: gray;
-     outline-style: solid;
-     */
+     background-color: #cecee4;
 
 }
             
@@ -41,6 +38,18 @@
 }
 
 #title-container {
+}
+
+#searchWord {
+  margin-left: 10px; 
+}
+
+#selectLevel {
+  margin-left: 10px;
+}
+
+#showRelations {
+  margin-left: 10px;
 }
 
 
