@@ -12,9 +12,12 @@ body {
 
 h1 {
    font: verdana;
-   font-style: italic;
-   font-size: 20px;
    
+}
+
+h3 {
+  font: verdana;
+   font-style: italic;
 }
 
 #side-bar, #graph, #side-buffer, #top-bar, #title-buffer, #title-container {display: inline-block; vertical-align:top;}
@@ -50,6 +53,7 @@ h1 {
   height: 80px;
   text-align: center;
   background-color: #e6d9cb;
+  margin: 20px;
 }
 
 #side-buffer {
