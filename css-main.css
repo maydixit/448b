@@ -2,6 +2,19 @@
 #cotainer {
     height:100%; 
     width:100%;
+    background-color: #e6d9cb;
+
+}
+
+body {
+  background-color: #e6d9cb;
+}
+
+h1 {
+   font: verdana;
+   font-style: italic;
+   font-size: 20px;
+   
 }
 
 #side-bar, #graph, #side-buffer, #top-bar, #title-buffer, #title-container {display: inline-block; vertical-align:top;}
@@ -9,47 +22,70 @@
 #side-bar {
      width:240px;
      min-height: 100%;
-     background-color: #cecee4;
+     background-color: #f8f2ed;
+     border-radius: 15px;
+     padding: 10px;
+     margin-top: 20px;
 
 }
             
 #graph {
-    width:72%;
+    width:750px; 
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px;
+
 }
 
 
 #top-buffer {
     width: 100%;
     height: 10px;
+    background-color: #e6d9cb;
 }
 
 #top-bar {
-  width:70%;
+  width:830px;
   height: 80px;
+  text-align: center;
+  background-color: #e6d9cb;
 }
 
 #side-buffer {
     width: 2%;
+    height:100%;
+    background-color: #e6d9cb;
 }
 
 #title-buffer {
   width:50px;
   height: 50px;
+  background-color: #e6d9cb;
 }
 
 #title-container {
+  background-color: #e6d9cb;
 }
 
 #searchWord {
-  margin-left: 10px; 
+  /*margin-left: 10px;*/ 
 }
 
 #selectLevel {
-  margin-left: 10px;
+  /*margin-left: 10px;*/
 }
 
 #showRelations {
-  margin-left: 10px;
+  /*margin-left: 10px;*/
+}
+
+#wordTwo {
+  /*margin-left: 10px;*/ 
+}
+
+#relateTo {
+  /*margin-left: 10px; */
 }
 
 

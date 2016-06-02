@@ -35,6 +35,15 @@
       //  draw_multiple_trees(central, central+1)   
     }
 
+    function relateWord() {
+        console.log("entered the relate function");
+
+        var word = document.getElementById("wordTwo").value;
+        console.log("the submitted word is: " + word);
+
+        //find depth set depth and draw the tree (highlighting the related word/path)
+    }
+
     function draw_each_tree(id_number) {
            central = Number(id_number); //setting the central node
            draw_multiple_trees(id_number, id_number+1);  
@@ -104,7 +113,6 @@
         }
         else
         root.children = temp_parents;
-
 
     }
 
@@ -196,6 +204,7 @@
         draw_multiple_trees(Number(central), Number(next));       
 
     }
+
 
     function draw_multiple_trees(min, max) {
         for(var i = min; i < max; i++)

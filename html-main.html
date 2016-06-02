@@ -22,11 +22,11 @@
 		</div>
 
 		<div id="top-bar">
-			<div id="title-buffer">
+		<!-- 	<div id="title-buffer">
 			</div>
-			<div id="title-container">
+			<div id="title-container"> -->
 				<h3> Word Relations </h3>
-			</div>
+			<!-- </div> -->
 		</div>
 
 
@@ -48,7 +48,7 @@
 			<!-- <form id="frm1" action="form_action.asp"> -->
 			<form id="frm1">
 				<p> Search Word: </p>
-				<input type="text" id="searchWord" name="fname"><br>
+				<input type="text" id="searchWord" name="fname"><br> </input>
 				 <!-- <input type="button" onclick="submitFunction()" value="Submit"> -->
 
 				<hr>
@@ -69,7 +69,16 @@
 
 				<hr>
 
-				<input type="button" id="showRelations" onclick="submitFunction()" value="Show Relations">
+
+
+				<input type="button" id="showRelations" onclick="submitFunction()" value="Show Relations"> </input>
+			</form>
+
+			<hr>
+			<form id="frm2">
+				<p> Relate To: </p>
+				<input type="text" id="wordTwo" name="word2"><br> </input>
+				<input type="button" id="relateTo" onclick="relateWord()" value="Relate To"> </input>
 			</form>
 
 			<!--<button type="button" id="startSearch" class="btn btn-primary-outline">Show Relations</button> -->
