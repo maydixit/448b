@@ -1,98 +1,115 @@
 
 #cotainer {
-    height:100%; 
-    width:100%;
-    background-color: #e6d9cb;
+    height: 100%;
+    width: 100%;
+    background: #fcfcfa;
 
 }
 
 body {
-  background-color: #e6d9cb;
+
+    background-color: #fcfcfa;
+    font-family: 'PT Serif', Serif;
+    /*background: #fcfcfa;*/
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+}
+
+#information {
+    margin-right: 33%;
 }
 
 h1 {
-   font: verdana;
-   
+
 }
 
 h3 {
-  font: verdana;
-   font-style: italic;
+
+    font-style: italic;
 }
 
-#side-bar, #graph, #side-buffer, #top-bar, #title-buffer, #title-container {display: inline-block; vertical-align:top;}
-            
+#side-bar, #graph, #side-buffer, #top-bar, #title-buffer, #title-container {
+    display: inline-block;
+    vertical-align: top;
+}
+
 #side-bar {
-     width:240px;
-     min-height: 100%;
-     background-color: #f8f2ed;
-     border-radius: 15px;
-     padding: 10px;
-     margin-top: 20px;
-
-}
-            
-#graph {
-    width:750px; 
-    background-color: white;
+    float: right;
+    width: 240px;
+    min-height: 100%;
+    background-color: #fcfcfa;
     border-radius: 15px;
-    padding: 20px;
-    margin: 20px;
+    padding: 10px;
+    margin-top: 20px;
 
 }
 
+#graph {
+    border-radius: 100px;
+    background-image: url("test1.png");
+    /* background: url("noisy_image_graph.png");*/
+}
 
 #top-buffer {
-    width: 100%;
+    width: 50%;
     height: 10px;
-    background-color: #e6d9cb;
+    background-color: #f8f2ed;
 }
 
 #top-bar {
-  width:830px;
-  height: 80px;
-  text-align: center;
-  background-color: #e6d9cb;
-  margin: 20px;
+    text-align: Left;
+    margin: 20px;
 }
 
 #side-buffer {
-    width: 2%;
-    height:100%;
-    background-color: #e6d9cb;
+    float: right;
+    width: 10%;
+    height: 100%;
+    background-color: #f8f2ed;
+}
+
+#left-side-buffer {
+    width: 20%;
+    height: 100%;
+    float: left;
+}
+
+#right-side-buffer {
+    width: 10%;
+    height: 100%;
+    float: right;
 }
 
 #title-buffer {
-  width:50px;
-  height: 50px;
-  background-color: #e6d9cb;
+    width: 50px;
+    height: 50px;
+    background-color: #f8f2ed;
 }
 
 #title-container {
-  background-color: #e6d9cb;
+    background-color: #f8f2ed;
 }
 
 #searchWord {
-  /*margin-left: 10px;*/ 
+    /*margin-left: 10px;*/
 }
 
 #selectLevel {
-  /*margin-left: 10px;*/
+    /*margin-left: 10px;*/
 }
 
 #showRelations {
-  /*margin-left: 10px;*/
+    /*margin-left: 10px;*/
 }
 
 #wordTwo {
-  /*margin-left: 10px;*/ 
+    /*margin-left: 10px;*/
 }
 
 #relateTo {
-  /*margin-left: 10px; */
+    /*margin-left: 10px; */
 }
-
-
 
 /* for the hierarchial bundle layout*/
 /*.link {
@@ -131,21 +148,21 @@ h3 {
 }
 */
 
- .node circle {
-        fill: #fff;
-        stroke: steelblue;
-        stroke-width: 1.5px;
-    }
+.node circle {
 
-    .node {
-        font: 10px sans-serif;
-    }
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
 
-    .link {
-        fill: none;
-        stroke: #ccc;
-        stroke-width: 1.5px;
-    }
+.node {
+    font: 10px sans-serif;
+}
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+}
 
 
 

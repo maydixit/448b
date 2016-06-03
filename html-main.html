@@ -1,91 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title> CS 448b Final Project </title>
-	<script type="text/javascript" src="d3/d3.js"></script>
-	<script src="http://code.jquery.com/jquery.js"></script>
-	<script src="bootstrap/js/bootstrap.js"></script>
-	<script src="http://d3js.org/topojson.v0.min.js"></script>
-	<!-- Bootstrap -->
-	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<link rel="stylesheet" type="text/css" href="css-main.css">
+    <meta charset="utf-8">
+    <title> CS 448b Final Project </title>
+    <script type="text/javascript" src="d3/d3.js"></script>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="http://d3js.org/topojson.v0.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" type="text/css" href="css-main.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=PT Serif">
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=PT Sans">
+
+
+    <style>
+        body {
+
+        }
+    </style>
 </head>
 <body>
-	<!-- <script src="bootstrap/js/bootstrap.min.js"></script>-->
-	<div id="container">
-
-		<div id="side-buffer">
-		</div>
-
-		<div id="top-buffer">
-		</div>
-
-		<div id="top-bar">
-		<!-- 	<div id="title-buffer">
-			</div>
-			<div id="title-container"> -->
-				<h1> Visualizing Etymology </h1>
-				<h3> -Origins and Derivations <h3>
-			<!-- </div> -->
-		</div>
 
 
-		<div id="graph">
-		<script type = "text/javascript" src="tree-layout.js"></script>
-
-		</div>
-		<div id="side-bar">
-			<!-- <hr>
-
-			<p> Search Word </p>
-			<form class="navbar-form navbar-left" role="search">
-    			<div class="form-group">
-      			  <input type="text" id="searchWord" name="searchWord" class="form-control" placeholder="Search" value="bank">
-   				 </div>
-			</form> -->
-
-			<hr>
-			<!-- <form id="frm1" action="form_action.asp"> -->
-			<form id="frm1">
-				<p> Search Word: </p>
-				<input type="text" id="searchWord" name="fname"><br> </input>
-				 <!-- <input type="button" onclick="submitFunction()" value="Submit"> -->
-
-				<hr>
-
-				<p> Select Depth: </p>
-				<select class="form-control" id="selectLevel">
-				  <option>1</option>
-				  <option>2</option>
-				  <option>3</option>
-				  <option>4</option>
-				  <option>5</option>
-				  <option>6</option>
-				  <option>7</option>
-				  <option>8</option>
-				  <option>9</option>
-				  <option>10</option>
-				</select>
-
-				<hr>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<div id="container">
 
 
+    <div id="top-bar" align="left">
+        <h1 style="font-family: 'PT Sans', sans; font-size: 48px"> Visualizing Etymology </h1>
+        <h3 style="font-family: 'PT Serif', Serif; font-size: 20px"> Exploring the origins of words </h3>
+    </div>
 
-				<input type="button" id="showRelations" onclick="submitFunction()" value="Show Relations"> </input>
-			</form>
 
-			<hr>
-			<form id="frm2">
-				<p> Relate To: </p>
-				<input type="text" id="wordTwo" name="word2"><br> </input>
-				<input type="button" id="relateTo" onclick="relateWord()" value="Relate To"> </input>
-			</form>
+    <div id="side-bar" align="center">
 
-			<!--<button type="button" id="startSearch" class="btn btn-primary-outline">Show Relations</button> -->
+        <hr>
 
-			<hr>
+        <form id="frm1">
+            <p align="center"> Look for a word: </p>
+            <input type="text" id="searchWord" name="fname"><br> </input>
 
-		</div>
-	</div>
+            <hr>
+
+            <p align="center"> Select the depth of the nodes to explore: </p>
+            <select class="form-control" id="selectLevel">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+            </select>
+
+            <hr>
+
+
+            <input type="button" align="center" id="showRelations" onclick="submitFunction()"
+                   value="Show Word Tree"> </input>
+        </form>
+
+        <hr>
+        <form id="frm2">
+            <p align="center"> Compare with: </p>
+            <input type="text" id="wordTwo" name="word2"><br> </input>
+            <div class="bttonholder" align="center"><input type="button" align="center" id="relateTo"
+                                                           onclick="relateWord()" value="Compare"> </input></div>
+
+        </form>
+
+
+        <hr>
+
+    </div>
+
+    <div id="information">
+        <p>
+            Here you can see blah blah blah... lbahsf ... blah blah blah... lbahsf ..
+            .blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah...
+            lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah...
+            lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...
+            blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf
+            ...
+            blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf
+            ...
+            blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf
+            ...
+            blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf
+            ...blah blah blah...
+            lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah
+            blah... lbahsf ...blah bla
+            h blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah
+            blah blah... lbahsf .
+            ..blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah...
+            lbahsf ...blah blah blah..
+            . lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...
+            blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf
+            ...
+
+        </p>
+
+    </div>
+
+    <div id="graph">
+        <script type="text/javascript" src="bundle-test.js"></script>
+    </div>
+
+
+</div>
 </body>
