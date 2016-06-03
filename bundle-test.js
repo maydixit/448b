@@ -343,7 +343,8 @@ var diagonal = d3.svg.diagonal.radial()
 function draw_tree() {
 
 
-   // svg.selectAll("*").remove();
+   if(svg != null) svg.selectAll("*").remove();
+    d3.select("#graph").empty();
     svg = d3.select("#graph").append("svg")
         .attr("width", diameter)
         .attr("height", diameter)
@@ -453,16 +454,20 @@ function mouseovered(d) {
 
     highlight_path(d);
 
-    textbox = svg.append("text")
-        .attr("x", 5)
-        .attr("y", 5)
-        .text("Language: " + d.name.split(": ")[0]);
-    //   .text("Depth: " + d.depth);
+
+    info = d3.select("svg").append("g")
+
+        .append("text")
+        //   .attr("x", xpos)
+        .attr("y", 50)
+        //  .text("Language: " + d.name.split(": ")[0] +  + "Depth: "+ d.depth );
+        .html("Language: " + d.name.split(": ")[0] + ", " + "Depth: "+ d.depth );
 
 }
 
 function mouseouted(d) {
-    textbox.remove();
+  
+    info.remove();
     link.style('stroke', function(l){
         return l.target.rel;
     });
@@ -577,10 +582,11 @@ function compare_words(word){
 }
 
 function word_submitted(word, depth_new){
-    depth = depth_new;
+    depth = parseInt(depth_new);
     var temp_ids = find_id(word);
     if(temp_ids != null) {
         var newid = parseInt(find_id(word)[0]);
+        d3.select("svg").remove();
         draw_multiple_trees(newid, newid + 1);
     }
     else{
