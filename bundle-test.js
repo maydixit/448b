@@ -2,12 +2,17 @@
  * Created by May on 6/2/16.
  */
 //TODO: catch all exceptions
+//TODO: create unique nodes
+//TODO: mouseover path highlighting
+//TODO: find relations between 2 words
+
 
 var diameter = 800,
     radius = diameter / 2,
     innerRadius = radius - 120;
 
-
+CHILD_REL = "slategrey";
+PARENT_REL = "gainsboro";
 var depth = 10;
 var data = null;
 var central = 236684;
@@ -61,16 +66,11 @@ function get_language_from_name(name) {
 
 function update_root() {
 
-    //classes = Array();
-
     root.name = data[central]["name"];
     root.id = central;
     root.depth = 0;
     root.children = get_children_nodes(root, 0, get_children);
     root.parent = null;
-
-
-    // console.log(classes);
 
     var temp_parents = get_children_nodes(root, 0, get_parents);
 
@@ -80,10 +80,6 @@ function update_root() {
     }
     else
         root.children = temp_parents;
-    //classes.push(root);
-    // console.log("Root: ");
-    //printNode(root);
-
 }
 
 function get_children_nodes(node, depth_local, updation_children) {
@@ -100,84 +96,20 @@ function get_children_nodes(node, depth_local, updation_children) {
         child_node.id = children_local[index];
         child_node.name = data[child_node.id]["name"];
         if (updation_children == get_children)
-            child_node.rel = "slategrey";
+            child_node.rel = CHILD_REL;
         else if (updation_children == get_parents)
-            child_node.rel = "gainsboro";
+            child_node.rel = PARENT_REL;
         var temp_children = get_children_nodes(child_node, depth_local + 1, updation_children);
         if (temp_children != null)
             child_node.children = temp_children;
         child_node.parent = node;
         child_node.depth = depth_local;
-        // classes.push(child_node);
         children_to_return.push(child_node);
-        // console.log("Adding child: ");
-        //printNode(child_node);
-    }
 
+    }
     return children_to_return;
 }
 
-
-/*  //Function to update the root of the tree to be used while drawing the tree
- //No input
- //No return
- //Creates the tree data structure
- function update_root(){
-
- classes = Array();
-
- root.name = data[central]["name"];
- root.id = central;
- root.depth = 0;
- root.imports = get_children_nodes(root, 0, get_children);
-
-
- console.log(classes);
-
- var temp_parents = get_children_nodes(root, 0, get_parents);
-
- if(root.imports != null)
- {
- if ( temp_parents != null)
- root.imports = root.imports.concat(temp_parents);
- }
- else
- root.imports = temp_parents;
- classes.push(root);
-
-
- }
-
- //update the children nodes recursively. The ends terminate with children having an array with a null elemeent.
- //Input: Node, depth
- //Output: Children array or null
- function get_children_nodes(node, depth_local, updation_children){
- if(depth_local >= depth)
- return null;
-
- var children_local = updation_children(node.id);
- if(children_local == null)
- return null;
- var children_to_return = Array();
-
- for(var index in children_local){
- var child_node = {};
- child_node.id = children_local[index];
- child_node.name = data[child_node.id]["name"];
- if(updation_children == get_children)
- child_node.rel = "red";
- else if(updation_children == get_parents)
- child_node.rel = "green";
- var temp_children = get_children_nodes(child_node, depth_local+1, updation_children);
- if(temp_children!=null)
- child_node.imports = temp_children;
- classes.push(child_node);
- children_to_return.push(child_node.name);
- }
-
- return children_to_return;
- }
- */
 var textbox;
 var link;
 var node;
@@ -276,40 +208,6 @@ function draw_tree() {
             draw_multiple_trees(central, central + 1);
         });
 
-    //svg.selectAll(".node").data(nodes).enter().append("circle").attr("r", 2);
-
-    //might have to change this so that this is done on the actual node (to clnk to links etc)
-    // svg.selectAll(".link")
-    //         .data(bundle(links))
-    //         .enter().append("path")
-    //         .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; }) //how to get this working?
-    //         .attr("class", "link")
-    //         .attr("d", line);
-
-    // svg.selectAll(".node")
-    //         .data(nodes.filter(function(n) { return !n.children; }))
-    //         .enter().append("g")
-    //         .attr("class", "node")
-    //         .classed(".node--child", function(d) { if (d.rel == "red") return true; })
-    //         .classed(".node--parent", function(d) { if (d.rel == "green") return true; })
-    //         .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
-    //         .append("text")
-    //         .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
-    //         .attr("dy", ".31em")
-    //         .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-    //         .attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
-    //         .text(function(d) { return d.name.split(": ")[1]; })
-    //         //.text(colorSelect(d))
-    //         .on("click", function(d) {
-    //             d3.select("svg").remove();
-
-    //             central = Number(d.id); //setting the central node
-    //             draw_multiple_trees(central, central+1);
-    //         })
-    //         .on("mouseover", mouseovered)
-    //         .on("mouseout", mouseouted);
-
-
 }
 
 var colorSelect = function (word) {
@@ -318,8 +216,20 @@ var colorSelect = function (word) {
 
 //NOT WORKING HOW TO FIND CHILDREN?
 
+function find_links_to_highlight(node) {
+
+    if(node.rel == "");
+
+
+}
+function highlight_path(node) {
+    find_links_to_highlight(node);
+
+
+}
 function mouseovered(d) {
-    console.log(d.name + " or : " + d);
+    highlight_path(d);
+
     textbox = svg.append("text")
         .attr("x", 5)
         .attr("y", 5)

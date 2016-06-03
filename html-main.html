@@ -35,50 +35,7 @@
     </div>
 
 
-    <div id="side-bar" align="center">
 
-        <hr>
-
-        <form id="frm1">
-            <p align="center"> Look for a word: </p>
-            <input type="text" id="searchWord" name="fname"><br> </input>
-
-            <hr>
-
-            <p align="center"> Select the depth of the nodes to explore: </p>
-            <select class="form-control" id="selectLevel">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-            </select>
-
-            <hr>
-
-
-            <input type="button" align="center" id="showRelations" onclick="submitFunction()"
-                   value="Show Word Tree"> </input>
-        </form>
-
-        <hr>
-        <form id="frm2">
-            <p align="center"> Compare with: </p>
-            <input type="text" id="wordTwo" name="word2"><br> </input>
-            <div class="bttonholder" align="center"><input type="button" align="center" id="relateTo"
-                                                           onclick="relateWord()" value="Compare"> </input></div>
-
-        </form>
-
-
-        <hr>
-
-    </div>
 
     <div id="information">
         <p>
@@ -108,9 +65,57 @@
 
     </div>
 
+    <div >
+
+        <div id="side-bar" align="center">
+
+            <hr>
+
+            <form id="frm1">
+                <p align="center"> Look for a word: </p>
+                <input type="text" id="searchWord" name="fname"><br> </input>
+
+                <hr>
+
+                <p align="center"> Select the depth of the nodes to explore: </p>
+                <select class="form-control" id="selectLevel">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                </select>
+
+                <hr>
+
+
+                <input type="button" align="center" id="showRelations" onclick="submitFunction()"
+                       value="Show Word Tree"> </input>
+            </form>
+
+            <hr>
+            <form id="frm2">
+                <p align="center"> Compare with: </p>
+                <input type="text" id="wordTwo" name="word2"><br> </input>
+                <div class="bttonholder" align="center"><input type="button" align="center" id="relateTo"
+                                                               onclick="relateWord()" value="Compare"> </input></div>
+
+            </form>
+
+
+            <hr>
+
+        </div>
+
     <div id="graph">
         <script type="text/javascript" src="bundle-test.js"></script>
     </div>
+        </div>
 
 
 </div>
