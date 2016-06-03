@@ -39,27 +39,11 @@
 
     <div id="information">
         <p>
-            Here you can see blah blah blah... lbahsf ... blah blah blah... lbahsf ..
-            .blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah...
-            lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah...
-            lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...
-            blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf
-            ...
-            blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf
-            ...
-            blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf
-            ...
-            blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf
-            ...blah blah blah...
-            lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah
-            blah... lbahsf ...blah bla
-            h blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah
-            blah blah... lbahsf .
-            ..blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah...
-            lbahsf ...blah blah blah..
-            . lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...
-            blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf ...blah blah blah... lbahsf
-            ...
+
+            This graph shows etymologically related words to the chosen center word. The center word has a fill color black, all words that originate from this,
+            have darker links/nodes and all words that are origins of this word have lighter links/nodes. To trace a path from a node to the center node, use hover.
+
+            You can click on any node view it's tree, or search for a word in the search box.
 
         </p>
 
@@ -78,7 +62,7 @@
                 <hr>
 
                 <p align="center"> Select the depth of the nodes to explore: </p>
-                <select class="form-control" id="selectLevel">
+                <select class="form-control" id="selectLevel" align="center">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -94,16 +78,25 @@
                 <hr>
 
 
-                <input type="button" align="center" id="showRelations" onclick="submitFunction()"
+                <input type="button" align="center" id="showRelations" onclick="function search_word_submit_function() {
+                    console.log('ENTERED: ' + document.getElementById('searchWord').value + ' and ' +
+                    document.getElementById('selectLevel').value);
+
+                    word_submitted(document.getElementById('searchWord').value, document.getElementById('selectLevel').value );
+
+                }
+                search_word_submit_function()"
                        value="Show Word Tree"> </input>
             </form>
 
             <hr>
             <form id="frm2">
                 <p align="center"> Compare with: </p>
-                <input type="text" id="wordTwo" name="word2"><br> </input>
+                <input type="text" id="secondWord" name="word2"><br> </input>
                 <div class="bttonholder" align="center"><input type="button" align="center" id="relateTo"
-                                                               onclick="relateWord()" value="Compare"> </input></div>
+                        onclick="function word_compare_submitted() {
+                            compare_words(document.getElementById('secondWord').value);
+                        } word_compare_submitted()" value="Compare"> </input></div>
 
             </form>
 

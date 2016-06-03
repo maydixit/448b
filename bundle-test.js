@@ -2,9 +2,11 @@
  * Created by May on 6/2/16.
  */
 //TODO: catch all exceptions
-//TODO: create unique nodes
-//TODO: mouseover path highlighting
+    //TODO: create unique nodes : done
+    //TODO: mouseover path highlighting: done
+    //TODO: Fix mouseout -> names change: done
 //TODO: find relations between 2 words
+
 
 
 var diameter = 800,
@@ -13,11 +15,15 @@ var diameter = 800,
 
 CHILD_REL = "slategrey";
 PARENT_REL = "gainsboro";
-var depth = 10;
+var depth = 2;
 var data = null;
 var central = 236684;
 var root = {};
 var classes; // it's an array of nodes
+highlight_color = {};
+highlight_color[CHILD_REL] = "black";
+highlight_color[PARENT_REL] = "blue";
+
 console.log("we are a go!");
 
 //Function to find parents of a given word (etymologically)
@@ -51,12 +57,17 @@ function get_children(local_id) {
 // Output; returns an array of all the ids where this word/phrase is found (only complete matches)
 function find_id(word) {
     var ret = Array();
+    var found_one = false;
     for (i in data) {
         phrase = data[i]["name"];
-        if (phrase.split(": ")[1] == word)
+        if (phrase.split(": ")[1] == word){
             ret.push(data[i]["id"]);
+            found_one = true;
+        }
     }
-    return ret;
+    if(found_one)
+        return ret;
+    else return null;
 }
 
 //Function to get the language of a particular name (name comes from the json)
@@ -64,8 +75,192 @@ function get_language_from_name(name) {
     return phrase.split(": ")[0];
 }
 
+function create_uniq_nodes() {
+    var waiting = Array();
+    waiting.push(root);
+    var found = Array();
+
+    while(waiting.length > 0){
+        var node_to_consider = waiting.shift();
+        if(!found.includes(node_to_consider.id)){
+            found.push(node_to_consider.id);
+            if(node_to_consider.children)
+                node_to_consider.children.forEach(function(child){
+                    waiting.push(child);
+                });
+        }
+        else
+        {
+            node_to_consider.parent.children.splice(node_to_consider.parent.children.indexOf(node_to_consider), 1);
+        }
+
+    }
+}
+
+
+//Start from root and search outwards.
+function build_search_tree(word_id) {
+
+    seenlist = Array();
+    var leaves = Array();
+    var waiting = Array();
+    waiting.push(root);
+
+    console.log("in build search tree");
+
+    while(waiting.length > 0){
+        var node_to_consider = waiting.shift();
+        console.log("considering:  " + node_to_consider.id);
+        if(node_to_consider.id == word_id) {
+            console.log("found: " + word_id);
+            return node_to_consider;
+        }
+        if(!seenlist.includes(node_to_consider.id)){
+            seenlist.push(node_to_consider.id);
+            if(!node_to_consider.children){
+                //create children
+                depth++;
+                var local_children = get_children_nodes(node_to_consider, depth-1, get_children);
+                var local_parents = get_children_nodes(node_to_consider, depth-1, get_parents);
+                if(local_children != null){
+                    if(local_parents!=null)
+                        local_children  = local_children.concat(local_parents);
+                }
+                else local_children = local_parents;
+
+                if(local_children) {
+                    node_to_consider.children = Array();
+                    local_children.forEach( function(child_local) {
+                        if(child_local.id == word_id) return child_local;
+                        if(!seenlist.includes(child_local.id) )
+                            node_to_consider.children.push(child_local);
+                    });
+                }
+
+            }
+            if(node_to_consider.children)
+                node_to_consider.children.forEach(function(child){
+                    waiting.push(child);
+                });
+        }
+
+    }
+
+    return null;
+
+
+
+/*
+    var local_children = get_children(cur_id);
+    var local_parents = get_parents(cur_id);
+
+    console.log("called build search tree from id: " + cur_id);
+
+    if(local_parents != null)
+        local_parents.forEach(function(child_id){
+            console.log("origin is: " + child_id);
+            //TODO: check if seen, if so continue
+            if(!seenlist.includes(child_id)) {
+                seenlist.push(child_id);
+                if (word_id == child_id) {
+                    //return the node here
+                    var temp_node = {};
+                    temp_node.id = word_id;
+                    temp_node.children = null;
+                    //TODo: temp_node.parent = need to set parent in the calling function
+                    temp_node.rel = PARENT_REL;
+                    temp_node.name = data[child_id]["name"]
+                    //ALso, set depth
+                    return temp_node;
+                }
+                var node_from_child = build_search_tree(child_id, word_id);
+                if (node_from_child != null) {
+                    var temp_node = {};
+                    temp_node.id = child_id;
+                    //TODo: temp_node.parent = need to set parent in the calling function and depth
+                    temp_node.rel = PARENT_REL;
+                    temp_node.name = data[child_node.id]["name"]
+                    temp_node.children = [node_from_child];
+                    temp_node.children[0].parent = temp_node;
+                    return temp_node;
+                }
+            }
+        });
+    if(local_children != null)
+        local_children.forEach(function(child_id){
+            console.log("child is: " + child_id);
+            //TODO: check if seen, if so continue
+            if(!seenlist.includes(child_id)) {
+                seenlist.push(child_id);
+                if (word_id == child_id) {
+                    //return the node here
+                    var temp_node = {};
+                    temp_node.id = word_id;
+                    temp_node.children = null;
+                    //TODo: temp_node.parent = need to set parent in the calling function
+                    temp_node.rel = CHILD_REL;
+                    temp_node.name = data[child_id]["name"]
+                    //ALso, set depth
+                    return temp_node;
+                }
+                var node_from_child = build_search_tree(child_id, word_id);
+                if (node_from_child != null) {
+                    var temp_node = {};
+                    temp_node.id = child_id;
+                    //TODo: temp_node.parent = need to set parent in the calling function and depth
+                    temp_node.rel = CHILD_REL;
+                    temp_node.name = data[child_node.id]["name"]
+                    temp_node.children = [node_from_child];
+                    temp_node.children[0].parent = temp_node;
+                    return temp_node;
+                }
+            }
+        });
+
+
+    return null;*/
+
+}
+
+var seenlist;
+function get_leaves(localnode) {
+    seenlist = Array();
+    var leaves = Array();
+    var waiting = Array();
+    waiting.push(root);
+
+    while(waiting.length > 0){
+        var node_to_consider = waiting.shift();
+
+        if(!seenlist.includes(node_to_consider.id)){
+            seenlist.push(node_to_consider.id);
+            if(node_to_consider.children)
+                node_to_consider.children.forEach(function(child){
+                    waiting.push(child);
+                });
+            else
+                leaves.push(node_to_consider);
+        }
+
+    }
+
+    return leaves;
+
+
+}
+
+function update_root_with_new_node(word_id){
+
+    build_search_tree(word_id);
+
+    //Todo: also check if it's already present
+
+    return false;
+}
+
 function update_root() {
 
+    root = {};
     root.name = data[central]["name"];
     root.id = central;
     root.depth = 0;
@@ -80,6 +275,8 @@ function update_root() {
     }
     else
         root.children = temp_parents;
+
+    create_uniq_nodes();
 }
 
 function get_children_nodes(node, depth_local, updation_children) {
@@ -93,7 +290,7 @@ function get_children_nodes(node, depth_local, updation_children) {
 
     for (var index in children_local) {
         var child_node = {};
-        child_node.id = children_local[index];
+        child_node.id = parseInt(children_local[index]);
         child_node.name = data[child_node.id]["name"];
         if (updation_children == get_children)
             child_node.rel = CHILD_REL;
@@ -113,42 +310,47 @@ function get_children_nodes(node, depth_local, updation_children) {
 var textbox;
 var link;
 var node;
-var svg;
+var svg = null;
+
+
+var cluster = d3.layout.cluster()
+    .size([360, innerRadius])
+    .sort(null)
+    .value(function (d) {
+        return 1000;
+    });
+
+var bundle = d3.layout.bundle();
+var line = d3.svg.line.radial()
+    .interpolate("bundle")
+    .tension(.85)
+    .radius(function (d) {
+        return d.y;
+    })
+    .angle(function (d) {
+        return d.x / 180 * Math.PI;
+    });
+
+var diagonal = d3.svg.diagonal.radial()
+    .projection(function (d) {
+        return [d.y, d.x / 180 * Math.PI];
+    });
+
+
 
 //Function to draw the tree radially
 //Currently, draws both etymological origins and derivations with the same color
 function draw_tree() {
 
 
-    var cluster = d3.layout.cluster()
-        .size([360, innerRadius])
-        .sort(null)
-        .value(function (d) {
-            return 1000;
-        });
-
-    var bundle = d3.layout.bundle();
-    var line = d3.svg.line.radial()
-        .interpolate("bundle")
-        .tension(.85)
-        .radius(function (d) {
-            return d.y;
-        })
-        .angle(function (d) {
-            return d.x / 180 * Math.PI;
-        });
-
-    var diagonal = d3.svg.diagonal.radial()
-        .projection(function (d) {
-            return [d.y, d.x / 180 * Math.PI];
-        });
-
-
+   // svg.selectAll("*").remove();
     svg = d3.select("#graph").append("svg")
         .attr("width", diameter)
         .attr("height", diameter)
         .append("g")
         .attr("transform", "translate(" + radius + "," + radius + ")");
+
+
     link = svg.append("g").selectAll(".link");
     node = svg.append("g").selectAll(".node");
 
@@ -164,7 +366,6 @@ function draw_tree() {
         })
         .attr("class", "link")
         .style("stroke", function (d) {
-            console.log(d.target.rel + " " + d.target.name);
             return d.target.rel;
         })
         .attr("d", diagonal);
@@ -204,6 +405,7 @@ function draw_tree() {
         .on("click", function (d) {
             d3.select("svg").remove();
 
+            console.log("Resetting central id in click");
             central = Number(d.id); //setting the central node
             draw_multiple_trees(central, central + 1);
         });
@@ -216,18 +418,39 @@ var colorSelect = function (word) {
 
 //NOT WORKING HOW TO FIND CHILDREN?
 
-function find_links_to_highlight(node) {
+function find_links_to_root(node) {
 
-    if(node.rel == "");
+    if (node.id == root.id) return null;
+    return_nodes = Array();
+    while (true) {
+        if(node.id != root.id){
+            console.log("adding " + node.id);
+            return_nodes.push(node);}
+        else break;
+        node = node.parent;
 
+    }
+    return return_nodes;
 
 }
-function highlight_path(node) {
-    find_links_to_highlight(node);
-
+function highlight_path(node_temp) {
 
 }
+var nodes_to_highlight;
 function mouseovered(d) {
+
+    nodes_to_highlight = find_links_to_root(d);
+
+    link.style('stroke', function(l){
+        if(nodes_to_highlight == null) return null;
+        if (nodes_to_highlight.includes(l.target))
+            return (highlight_color[l.target.rel]);
+        else return null;
+    });
+
+    d3.select(this).text(d.name.split(": ")[1]).style("font-weight", "bold")
+        .style("font-size", "14px");
+
     highlight_path(d);
 
     textbox = svg.append("text")
@@ -236,56 +459,18 @@ function mouseovered(d) {
         .text("Language: " + d.name.split(": ")[0]);
     //   .text("Depth: " + d.depth);
 
-    node
-        .each(function (n) {
-            n.target = n.source = false;
-        });
-    //   node.classed("node--background", true);
-    //   link.classed("link--background", true);
-
-    link
-        .classed("link--target", function (l) {
-            if (l.target === d) return l.source.source = true;
-        })
-        .classed("link--source", function (l) {
-            if (l.source === d) return l.target.target = true;
-        })
-        //       .classed("link--background", function(l) {
-        //         if (l.source === d) {
-        //            return l.target.target = false;
-        //       } else {
-        //          l.target.target = true;
-        //      }
-        //    })
-        .filter(function (l) {
-            return l.target === d || l.source === d;
-        })
-        .each(function () {
-            this.parentNode.appendChild(this);
-        });
-
-    node
-        .classed("node--target", function (n) {
-            return n.target;
-        })
-        .classed("node--source", function (n) {
-            return n.source;
-        });
 }
 
 function mouseouted(d) {
     textbox.remove();
+    link.style('stroke', function(l){
+        return l.target.rel;
+    });
 
-    node.classed("node--background", false);
-    link.classed("link--background", false);
+    d3.select(this).text(d.name.split(": ")[1])
+        .style("font-size", "12px")
+        .style("font-weight", "normal");
 
-    link
-        .classed("link--target", false)
-        .classed("link--source", false);
-
-    node
-        .classed("node--target", false)
-        .classed("node--source", false);
 }
 
 d3.select(self.frameElement).style("height", diameter - 150 + "px");
@@ -309,8 +494,10 @@ d3.json("json_children_parents.json", function (input) {
 
 
     draw_multiple_trees(central, central + 1);
-    //draw_multiple_trees(94, 95);
 
+    //draw_multiple_trees(94, 95);
+ //   update_root_with_new_node(1158614);
+   // draw_tree();
     /*  var node = root;
      console.log("root is: " + root)
      while(node.children!=null)
@@ -384,3 +571,19 @@ function packageImports(nodes) {
 
 }
 
+function compare_words(word){
+    window.alert("This functionality is coming soon ... ");
+
+}
+
+function word_submitted(word, depth_new){
+    depth = depth_new;
+    var temp_ids = find_id(word);
+    if(temp_ids != null) {
+        var newid = parseInt(find_id(word)[0]);
+        draw_multiple_trees(newid, newid + 1);
+    }
+    else{
+        //Show message
+    }
+}
