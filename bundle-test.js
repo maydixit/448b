@@ -384,6 +384,15 @@ function draw_tree() {
         .attr("fill", function (d) {
             if (root.id == d.id) return "black";
             return d.rel;
+        })
+        .on("mouseover", mouseovered)
+        .on("mouseout", mouseouted)
+        .on("click", function (d) {
+            d3.select("svg").remove();
+
+            console.log("Resetting central id in click");
+            central = Number(d.id); //setting the central node
+            draw_multiple_trees(central, central + 1);
         });
     node.append("text")
         .attr("dy", ".31em")
@@ -466,7 +475,7 @@ function mouseovered(d) {
 }
 
 function mouseouted(d) {
-  
+
     info.remove();
     link.style('stroke', function(l){
         return l.target.rel;
