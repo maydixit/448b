@@ -296,9 +296,15 @@ function get_children_nodes(node, depth_local, updation_children) {
             child_node.rel = CHILD_REL;
         else if (updation_children == get_parents)
             child_node.rel = PARENT_REL;
-        var temp_children = get_children_nodes(child_node, depth_local + 1, updation_children);
-        if (temp_children != null)
-            child_node.children = temp_children;
+        var temp_children1 = get_children_nodes(child_node, depth_local + 1, get_children);
+        var temp_children2 = get_children_nodes(child_node, depth_local + 1, get_parents);
+        if (temp_children1 != null){
+            if(temp_children2 != null){
+                temp_children1 = temp_children1.concat(temp_children2);
+            }
+            child_node.children = temp_children1;
+        }
+        else if(temp_children2 != null) child_node.children = temp_children2;
         child_node.parent = node;
         child_node.depth = depth_local;
         children_to_return.push(child_node);
@@ -400,6 +406,7 @@ function draw_tree() {
             return d.x < 180 ? "0.60em" : "-0.60em";
         })
         .style("font-size", "12px")
+    //    .style("fill", "lightgrey")
         .attr("transform", function (d) {
             if (d.children) return "rotate( " + (90 - d.x) + " )";
             return (    d.x < 180 ? "" : "rotate(180)");
@@ -602,3 +609,7 @@ function word_submitted(word, depth_new){
         //Show message
     }
 }
+
+
+//TODO: change colors if there are too many nodes.. only color the highlighted ones..
+
