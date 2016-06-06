@@ -5,8 +5,9 @@
 //TODO: create unique nodes : done
 //TODO: mouseover path highlighting: done
 //TODO: Fix mouseout -> names change: done
-//TODO: find relations between 2 words
-//TODo: clean up data to remove -less, -er etc.
+//TODO: find relations between 2 words Done
+//TODo: clean up data to remove -less, -er etc. Done
+// TODO: handle the too many nodes case
 
 // if it reaches the root node in depth 5, then cool, we redraw the tree.. with a certain depth.
     // if it reaches another
@@ -461,6 +462,7 @@ function create_search(temp_ids) {
     }
     depth_in_tree = 0;
     id_to_consider = 0;
+    current_id = central;
     for(d = 1; d < 6; d++){
 
         for (i in temp_ids){
@@ -485,9 +487,9 @@ function create_search(temp_ids) {
         }
         if(found_val){
             depth = depth_in_tree + d;
-            console.log("FINAL :  " + id_to_consider + " at depth" + depth)
+            console.log("FINAL :  " + current_id + " at depth" + depth)
             d3.select("svg").remove();
-            draw_multiple_trees(parseInt(id_to_consider), parseInt(id_to_consider)+1);
+            draw_multiple_trees(parseInt(current_id), parseInt(current_id)+1);
             break;
         }
     }
