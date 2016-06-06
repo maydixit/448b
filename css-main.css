@@ -157,7 +157,9 @@ h3 {
 .node {
     font: 10px sans-serif;
 }
-
+.text {
+    font: 10px sans-serif;
+}
 .link {
     fill: none;
     stroke: #ccc;

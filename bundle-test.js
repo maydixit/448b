@@ -2,12 +2,14 @@
  * Created by May on 6/2/16.
  */
 //TODO: catch all exceptions
-    //TODO: create unique nodes : done
-    //TODO: mouseover path highlighting: done
-    //TODO: Fix mouseout -> names change: done
+//TODO: create unique nodes : done
+//TODO: mouseover path highlighting: done
+//TODO: Fix mouseout -> names change: done
 //TODO: find relations between 2 words
+//TODo: clean up data to remove -less, -er etc.
 
-
+// if it reaches the root node in depth 5, then cool, we redraw the tree.. with a certain depth.
+    // if it reaches another
 
 var diameter = 800,
     radius = diameter / 2,
@@ -15,7 +17,7 @@ var diameter = 800,
 
 CHILD_REL = "slategrey";
 PARENT_REL = "gainsboro";
-var depth = 2;
+var depth = 5;
 var data = null;
 var central = 236684;
 var root = {};
@@ -56,6 +58,7 @@ function get_children(local_id) {
 // Input: word/phrase without the name of the language.
 // Output; returns an array of all the ids where this word/phrase is found (only complete matches)
 function find_id(word) {
+    console.log("in find id")
     var ret = Array();
     var found_one = false;
     for (i in data) {
@@ -65,6 +68,7 @@ function find_id(word) {
             found_one = true;
         }
     }
+
     if(found_one)
         return ret;
     else return null;
@@ -74,16 +78,19 @@ function find_id(word) {
 function get_language_from_name(name) {
     return phrase.split(": ")[0];
 }
-
+var seenList;
+var nodelist;
 function create_uniq_nodes() {
     var waiting = Array();
     waiting.push(root);
-    var found = Array();
+    seenList = Array();
+    nodelist = Array();
 
     while(waiting.length > 0){
         var node_to_consider = waiting.shift();
-        if(!found.includes(node_to_consider.id)){
-            found.push(node_to_consider.id);
+        if(!seenList.includes(node_to_consider.id)){
+            seenList.push(node_to_consider.id);
+            nodelist.push(node_to_consider);
             if(node_to_consider.children)
                 node_to_consider.children.forEach(function(child){
                     waiting.push(child);
@@ -97,177 +104,16 @@ function create_uniq_nodes() {
     }
 }
 
-
-//Start from root and search outwards.
-function build_search_tree(word_id) {
-
-    seenlist = Array();
-    var leaves = Array();
-    var waiting = Array();
-    waiting.push(root);
-
-    console.log("in build search tree");
-
-    while(waiting.length > 0){
-        var node_to_consider = waiting.shift();
-        console.log("considering:  " + node_to_consider.id);
-        if(node_to_consider.id == word_id) {
-            console.log("found: " + word_id);
-            return node_to_consider;
-        }
-        if(!seenlist.includes(node_to_consider.id)){
-            seenlist.push(node_to_consider.id);
-            if(!node_to_consider.children){
-                //create children
-                depth++;
-                var local_children = get_children_nodes(node_to_consider, depth-1, get_children);
-                var local_parents = get_children_nodes(node_to_consider, depth-1, get_parents);
-                if(local_children != null){
-                    if(local_parents!=null)
-                        local_children  = local_children.concat(local_parents);
-                }
-                else local_children = local_parents;
-
-                if(local_children) {
-                    node_to_consider.children = Array();
-                    local_children.forEach( function(child_local) {
-                        if(child_local.id == word_id) return child_local;
-                        if(!seenlist.includes(child_local.id) )
-                            node_to_consider.children.push(child_local);
-                    });
-                }
-
-            }
-            if(node_to_consider.children)
-                node_to_consider.children.forEach(function(child){
-                    waiting.push(child);
-                });
-        }
-
-    }
-
-    return null;
-
-
-
-/*
-    var local_children = get_children(cur_id);
-    var local_parents = get_parents(cur_id);
-
-    console.log("called build search tree from id: " + cur_id);
-
-    if(local_parents != null)
-        local_parents.forEach(function(child_id){
-            console.log("origin is: " + child_id);
-            //TODO: check if seen, if so continue
-            if(!seenlist.includes(child_id)) {
-                seenlist.push(child_id);
-                if (word_id == child_id) {
-                    //return the node here
-                    var temp_node = {};
-                    temp_node.id = word_id;
-                    temp_node.children = null;
-                    //TODo: temp_node.parent = need to set parent in the calling function
-                    temp_node.rel = PARENT_REL;
-                    temp_node.name = data[child_id]["name"]
-                    //ALso, set depth
-                    return temp_node;
-                }
-                var node_from_child = build_search_tree(child_id, word_id);
-                if (node_from_child != null) {
-                    var temp_node = {};
-                    temp_node.id = child_id;
-                    //TODo: temp_node.parent = need to set parent in the calling function and depth
-                    temp_node.rel = PARENT_REL;
-                    temp_node.name = data[child_node.id]["name"]
-                    temp_node.children = [node_from_child];
-                    temp_node.children[0].parent = temp_node;
-                    return temp_node;
-                }
-            }
-        });
-    if(local_children != null)
-        local_children.forEach(function(child_id){
-            console.log("child is: " + child_id);
-            //TODO: check if seen, if so continue
-            if(!seenlist.includes(child_id)) {
-                seenlist.push(child_id);
-                if (word_id == child_id) {
-                    //return the node here
-                    var temp_node = {};
-                    temp_node.id = word_id;
-                    temp_node.children = null;
-                    //TODo: temp_node.parent = need to set parent in the calling function
-                    temp_node.rel = CHILD_REL;
-                    temp_node.name = data[child_id]["name"]
-                    //ALso, set depth
-                    return temp_node;
-                }
-                var node_from_child = build_search_tree(child_id, word_id);
-                if (node_from_child != null) {
-                    var temp_node = {};
-                    temp_node.id = child_id;
-                    //TODo: temp_node.parent = need to set parent in the calling function and depth
-                    temp_node.rel = CHILD_REL;
-                    temp_node.name = data[child_node.id]["name"]
-                    temp_node.children = [node_from_child];
-                    temp_node.children[0].parent = temp_node;
-                    return temp_node;
-                }
-            }
-        });
-
-
-    return null;*/
-
-}
-
-var seenlist;
-function get_leaves(localnode) {
-    seenlist = Array();
-    var leaves = Array();
-    var waiting = Array();
-    waiting.push(root);
-
-    while(waiting.length > 0){
-        var node_to_consider = waiting.shift();
-
-        if(!seenlist.includes(node_to_consider.id)){
-            seenlist.push(node_to_consider.id);
-            if(node_to_consider.children)
-                node_to_consider.children.forEach(function(child){
-                    waiting.push(child);
-                });
-            else
-                leaves.push(node_to_consider);
-        }
-
-    }
-
-    return leaves;
-
-
-}
-
-function update_root_with_new_node(word_id){
-
-    build_search_tree(word_id);
-
-    //Todo: also check if it's already present
-
-    return false;
-}
-
-function update_root() {
+function update_root(depth_max) {
 
     root = {};
     root.name = data[central]["name"];
     root.id = central;
     root.depth = 0;
-    root.children = get_children_nodes(root, 0, get_children);
+    root.children = get_children_nodes(root, 0, get_children, depth_max);
     root.parent = null;
 
-    var temp_parents = get_children_nodes(root, 0, get_parents);
+    var temp_parents = get_children_nodes(root, 0, get_parents, depth_max);
 
     if (root.children != null) {
         if (temp_parents != null)
@@ -279,8 +125,8 @@ function update_root() {
     create_uniq_nodes();
 }
 
-function get_children_nodes(node, depth_local, updation_children) {
-    if (depth_local >= depth)
+function get_children_nodes(node, depth_local, updation_children, depth_max) {
+    if (depth_local >= depth_max)
         return null;
 
     var children_local = updation_children(node.id);
@@ -296,8 +142,8 @@ function get_children_nodes(node, depth_local, updation_children) {
             child_node.rel = CHILD_REL;
         else if (updation_children == get_parents)
             child_node.rel = PARENT_REL;
-        var temp_children1 = get_children_nodes(child_node, depth_local + 1, get_children);
-        var temp_children2 = get_children_nodes(child_node, depth_local + 1, get_parents);
+        var temp_children1 = get_children_nodes(child_node, depth_local + 1, get_children, depth_max);
+        var temp_children2 = get_children_nodes(child_node, depth_local + 1, get_parents, depth_max);
         if (temp_children1 != null){
             if(temp_children2 != null){
                 temp_children1 = temp_children1.concat(temp_children2);
@@ -349,7 +195,7 @@ var diagonal = d3.svg.diagonal.radial()
 function draw_tree() {
 
 
-   if(svg != null) svg.selectAll("*").remove();
+    if(svg != null) svg.selectAll("*").remove();
     d3.select("#graph").empty();
     svg = d3.select("#graph").append("svg")
         .attr("width", diameter)
@@ -406,7 +252,7 @@ function draw_tree() {
             return d.x < 180 ? "0.60em" : "-0.60em";
         })
         .style("font-size", "12px")
-    //    .style("fill", "lightgrey")
+        //    .style("fill", "lightgrey")
         .attr("transform", function (d) {
             if (d.children) return "rotate( " + (90 - d.x) + " )";
             return (    d.x < 180 ? "" : "rotate(180)");
@@ -499,9 +345,9 @@ d3.select(self.frameElement).style("height", diameter - 150 + "px");
 
 function draw_multiple_trees(min, max) {
     for (var i = min; i < max; i++) {
-        console.log(i);
+       // console.log(i);
         central = i;
-        update_root();
+        update_root(depth);
         draw_tree();
     }
 }
@@ -517,8 +363,8 @@ d3.json("json_children_parents.json", function (input) {
     draw_multiple_trees(central, central + 1);
 
     //draw_multiple_trees(94, 95);
- //   update_root_with_new_node(1158614);
-   // draw_tree();
+    //   update_root_with_new_node(1158614);
+    // draw_tree();
     /*  var node = root;
      console.log("root is: " + root)
      while(node.children!=null)
@@ -592,16 +438,85 @@ function packageImports(nodes) {
 
 }
 
-function compare_words(word){
-    window.alert("This functionality is coming soon ... ");
+function get_current_node_list(){
+    function node_list_step(temp_node) {
+        var ret = [temp_node.id]
 
+    }
+
+    return node_list_step(root);
+}
+
+function create_search(temp_ids) {
+    current_seen_list = seenList;
+    current_node_list = nodelist;
+    var found_val = false;
+
+    function find_depth(seenval, current_node_list) {
+        for(index in current_node_list){
+            if(current_node_list[index].id == seenval)
+                return current_node_list[index].depth;
+        }
+        return 0;
+    }
+    depth_in_tree = 0;
+    id_to_consider = 0;
+    for(d = 1; d < 6; d++){
+
+        for (i in temp_ids){
+            id_to_consider = temp_ids[i];
+            console.log("Looping for id: " + temp_ids[i]);
+            central = temp_ids[i];
+
+            depth = d;
+            update_root(depth);
+            console.log("root has been updated");
+
+
+            for(seenval in seenList){
+                if(current_seen_list.includes(seenList[seenval])){
+                    depth_in_tree = find_depth(seenList[seenval], current_node_list)
+                    found_val = true;
+                    console.log("WE FOUND OUR VALUE" + seenList + " " + current_seen_list + " at depth: " + depth_in_tree + " and d : " + d)
+                    break;
+                }
+            }
+            console.log("WE ? OUR VALUE" + seenList + " " + current_seen_list)
+        }
+        if(found_val){
+            depth = depth_in_tree + d;
+            console.log("FINAL :  " + id_to_consider + " at depth" + depth)
+            d3.select("svg").remove();
+            draw_multiple_trees(parseInt(id_to_consider), parseInt(id_to_consider)+1);
+            break;
+        }
+    }
+}
+function compare_words(word){
+    //window.alert("This functionality is coming soon ... ");
+    var temp_ids = find_id(word);
+    console.log("found id" + temp_ids)
+    create_search(temp_ids);
+
+    /* if(temp_ids != null) {
+     var newid = parseInt(find_id(word)[0]);
+     var root1 = {}
+     update_root(root1, newid)
+     }
+     function compare_trees(root1, root) {
+
+     }
+
+     compare_trees(root1, root); // compare if the two roots have any node in common, if so, reset the depth and redraw the tree
+     */
 }
 
 function word_submitted(word, depth_new){
     depth = parseInt(depth_new);
     var temp_ids = find_id(word);
+    console.log("calling find id from word submitted ")
     if(temp_ids != null) {
-        var newid = parseInt(find_id(word)[0]);
+        var newid = parseInt(temp_ids[0]);
         d3.select("svg").remove();
         draw_multiple_trees(newid, newid + 1);
     }
