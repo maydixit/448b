@@ -349,7 +349,9 @@ function draw_multiple_trees(min, max) {
        // console.log(i);
         central = i;
         update_root(depth);
+        document.getElementById("status-text").innerHTML = "Drawing Tree!"
         draw_tree();
+        document.getElementById("status-text").innerHTML = "Your Tree is Ready!"
     }
 }
 
@@ -496,34 +498,27 @@ function create_search(temp_ids) {
 }
 function compare_words(word){
     //window.alert("This functionality is coming soon ... ");
+    document.getElementById("status-text").innerHTML = "Looking for word: " + word;
     var temp_ids = find_id(word);
-    console.log("found id" + temp_ids)
+    document.getElementById("status-text").innerHTML = "We found " + temp_ids.length + " instances of the word... Looking for links .. ";
     create_search(temp_ids);
 
-    /* if(temp_ids != null) {
-     var newid = parseInt(find_id(word)[0]);
-     var root1 = {}
-     update_root(root1, newid)
-     }
-     function compare_trees(root1, root) {
-
-     }
-
-     compare_trees(root1, root); // compare if the two roots have any node in common, if so, reset the depth and redraw the tree
-     */
 }
 
 function word_submitted(word, depth_new){
+    document.getElementById("status-text").innerHTML = "Looking for word " + word;
     depth = parseInt(depth_new);
     var temp_ids = find_id(word);
-    console.log("calling find id from word submitted ")
     if(temp_ids != null) {
+        document.getElementById("status-text").innerHTML = "We found " + temp_ids.length + " instances of the word... Choosing the first one!";
         var newid = parseInt(temp_ids[0]);
         d3.select("svg").remove();
         draw_multiple_trees(newid, newid + 1);
+
     }
     else{
         //Show message
+        document.getElementById("status-text").innerHTML = "Oops!! Our database does not seem to have this word! Keeping the current tree intact!"
     }
 }
 
